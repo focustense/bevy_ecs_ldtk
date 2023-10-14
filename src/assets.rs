@@ -8,13 +8,19 @@ use bevy::{
     render::render_resource::{Extent3d, TextureDimension, TextureFormat},
     utils::BoxedFuture,
 };
+use path_clean::PathClean;
 use std::{collections::HashMap, path::Path};
 
 #[allow(unused_imports)]
 use crate::components::LdtkWorldBundle;
 
 fn ldtk_path_to_asset_path<'b>(ldtk_path: &Path, rel_path: &str) -> AssetPath<'b> {
-    ldtk_path.parent().unwrap().join(Path::new(rel_path)).into()
+    ldtk_path
+        .parent()
+        .unwrap()
+        .join(Path::new(rel_path))
+        .clean()
+        .into()
 }
 
 /// Used in [LdtkAsset]. Key is the tileset definition uid.
