@@ -270,7 +270,16 @@ pub fn spawn_level(
             }
         }
 
-        for layer_instance in layer_instances.iter().rev() {
+        for layer_instance in layer_instances
+            .iter()
+            .filter(|layer| {
+                !ldtk_settings
+                    .exclusions
+                    .layer_identifiers
+                    .contains(&layer.identifier)
+            })
+            .rev()
+        {
             match layer_instance.layer_instance_type {
                 Type::Entities => {
                     commands.entity(ldtk_entity).with_children(|commands| {
